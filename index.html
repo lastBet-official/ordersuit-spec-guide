@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>オーダースーツ 仕様ガイド｜比較ツール</title>
+<style>
+  :root{
+    --navy:#1f3a5c; --navy2:#2a4d78; --teal:#21544f; --gold:#c4a45a; --gold-l:#ead296;
+    --cream:#f7f3e9; --lblue:#e8f0f7; --lgold:#fbf3e1; --lgreen:#e9f3eb;
+    --ink:#232323; --muted:#6b6b6b; --line:#e2ddd2; --bg:#f4f2ee; --white:#fff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Meiryo","Hiragino Kaku Gothic ProN","Yu Gothic UI",system-ui,sans-serif;
+    color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--navy2)}
+  /* Top bar */
+  header.top{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;
+    box-shadow:0 2px 10px rgba(0,0,0,.18)}
+  .top-inner{max-width:1180px;margin:0 auto;padding:12px 18px}
+  .brand{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+  .brand h1{font-size:19px;margin:0;font-weight:700;letter-spacing:.5px}
+  .brand .sub{font-size:12px;color:var(--gold-l)}
+  .toolbar{display:flex;gap:10px;align-items:center;margin-top:10px;flex-wrap:wrap}
+  .search{flex:1;min-width:220px;position:relative}
+  .search input{width:100%;padding:9px 34px 9px 12px;border-radius:8px;border:none;font-size:14px;
+    font-family:inherit}
+  .search .x{position:absolute;right:8px;top:50%;transform:translateY(-50%);cursor:pointer;color:#999;
+    font-size:18px;display:none;background:none;border:none}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap}
+  .tab{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.25);
+    padding:7px 14px;border-radius:20px;cursor:pointer;font-size:13px;font-family:inherit;white-space:nowrap}
+  .tab:hover{background:rgba(255,255,255,.22)}
+  .tab.active{background:var(--gold);color:var(--navy);border-color:var(--gold);font-weight:700}
+  /* Layout */
+  main{max-width:1180px;margin:0 auto;padding:20px 18px 80px}
+  .hint{font-size:13px;color:var(--muted);margin:2px 0 16px}
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  /* Card */
+  .card{background:var(--white);border:1px solid var(--line);border-radius:14px;overflow:hidden;
+    display:flex;flex-direction:column;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+  .card .head{background:var(--navy);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;
+    align-items:center;gap:8px}
+  .card.pants .head{background:var(--teal)}
+  .card .head .term{font-size:17px;font-weight:700}
+  .card .head .read{font-size:11px;color:var(--gold-l);margin-top:2px}
+  .card .head .no{font-size:11px;background:var(--gold);color:var(--navy);padding:3px 9px;border-radius:12px;
+    font-weight:700;white-space:nowrap}
+  .card .body{padding:14px 16px;display:flex;flex-direction:column;gap:12px;flex:1}
+  .photo{width:100%;background:#f6f6f3;border-radius:8px;overflow:hidden;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;cursor:zoom-in}
+  .photo img{width:100%;height:auto;display:block;max-height:230px;object-fit:contain}
+  .blk{border-radius:8px;padding:10px 12px}
+  .blk .lbl{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:5px;display:flex;align-items:center;gap:6px}
+  .blk.whatis{background:var(--lblue)}
+  .blk.compare{background:var(--lgold)}
+  .blk.talk{background:var(--lgreen);font-style:normal}
+  .blk .txt{font-size:13.5px}
+  .talk .txt{color:#2f5d43}
+  /* options table */
+  table.opts{width:100%;border-collapse:collapse;font-size:13px}
+  table.opts td{border-bottom:1px solid var(--line);padding:6px 4px;vertical-align:top}
+  table.opts tr:last-child td{border-bottom:none}
+  table.opts .oname{font-weight:700;color:var(--navy);white-space:nowrap;padding-right:10px;width:1%}
+  .paid{color:#b3541e;font-weight:700}
+  .opt-lbl{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:4px}
+  /* comparison tables */
+  .ctable-wrap{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:22px;
+    overflow-x:auto}
+  .ctable-wrap h3{margin:0 0 4px;color:var(--navy);font-size:18px}
+  .ctable-wrap .lead{font-size:13px;color:var(--muted);margin-bottom:12px}
+  table.cmp{width:100%;border-collapse:collapse;font-size:13.5px;min-width:560px}
+  table.cmp th,table.cmp td{border:1px solid var(--line);padding:9px 11px;text-align:center}
+  table.cmp thead th{background:var(--navy);color:#fff}
+  table.cmp tbody td:first-child{background:var(--cream);font-weight:700;text-align:left;color:var(--navy);white-space:nowrap}
+  table.cmp tbody tr:nth-child(even) td{background:#faf9f6}
+  /* glossary */
+  .gloss{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  @media(max-width:820px){.gloss{grid-template-columns:1fr}}
+  .gitem{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 13px;font-size:13.5px}
+  .gitem b{color:var(--navy)}
+  .section-title{font-size:15px;color:var(--navy);font-weight:700;margin:6px 0 12px;
+    border-left:5px solid var(--gold);padding-left:10px}
+  mark{background:#fff1a8;padding:0 1px;border-radius:2px}
+  .noresult{color:var(--muted);padding:30px;text-align:center}
+  .hidden{display:none!important}
+  /* lightbox */
+  .lb{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;
+    z-index:100;padding:24px;cursor:zoom-out}
+  .lb.open{display:flex}
+  .lb img{max-width:95%;max-height:92%;border-radius:6px;box-shadow:0 6px 30px rgba(0,0,0,.5)}
+  footer{max-width:1180px;margin:0 auto;padding:0 18px 40px;color:var(--muted);font-size:12px}
+  @media print{header.top{position:static}.tabs,.search,.tab{display:none}.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-inner">
+    <div class="brand">
+      <h1>オーダースーツ 仕様ガイド</h1>
+      <span class="sub">新人でもわかる・お客様に説明できる 比較ツール</span>
+    </div>
+    <div class="toolbar">
+      <div class="search">
+        <input id="q" type="text" placeholder="検索（例：ベント / 総毛芯 / フラップ / タック …）" autocomplete="off">
+        <button class="x" id="qx" title="クリア">×</button>
+      </div>
+      <div class="tabs" id="tabs">
+        <button class="tab active" data-view="jacket">ジャケット</button>
+        <button class="tab" data-view="pants">パンツ</button>
+        <button class="tab" data-view="tables">早わかり比較</button>
+        <button class="tab" data-view="glossary">用語集</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hint" id="hint"></div>
+  <div id="view-jacket"></div>
+  <div id="view-pants" class="hidden"></div>
+  <div id="view-tables" class="hidden"></div>
+  <div id="view-glossary" class="hidden"></div>
+  <div class="noresult hidden" id="noresult">該当する項目が見つかりませんでした。別のキーワードでお試しください。</div>
+</main>
+
+<footer>
+  ※印＝有料オプション　／　「標準」と書かれた仕様を選べば、まず失敗しません。<br>
+  画像はフォルダ内の <code>media</code> と一緒に保管してください。&nbsp;LB オーダースーツ 仕様ガイド 2026年版。
+</footer>
+
+<div class="lb" id="lb"><img id="lbimg" src="" alt=""></div>
+
+<script>
+const DATA = {
+  "meta": {
+    "title": "オーダースーツ 仕様ガイド",
+    "subtitle": "～ 新人でもわかる・お客様に説明できる 仕様と選び方 ～",
+    "brand": "LB オーダースーツ",
+    "version": "2026年 更新版",
+    "legend": "※印は有料オプションです。／ 迷ったら「標準」を選べば失敗しません。"
+  },
+  "labels": {
+    "whatis": "これは？（かんたん解説）",
+    "options": "主な選択肢",
+    "compare": "選び方・比較",
+    "talk": "接客トーク例",
+    "jacket": "JACKET／ジャケット",
+    "pants": "PANTS／パンツ"
+  },
+  "howto": {
+    "title": "このガイドの使い方",
+    "lead": "各ページは同じレイアウトです。左に写真、右に4つのボックスで解説します。",
+    "boxes": [
+      "① これは？…専門用語をやさしく解説（新人・お客様向け）",
+      "② 主な選択肢…代表的な仕様と特徴",
+      "③ 選び方・比較…「これとこれ何が違う？」に答えるポイント",
+      "④ 接客トーク例…そのまま使えるおすすめの言い回し"
+    ],
+    "rules": [
+      "※印 ＝ 有料オプション",
+      "「標準」と書かれた仕様を選べば、まず失敗しません",
+      "フォーマル度・カジュアル度の目安も記載しています"
+    ],
+    "toc": "目次： ジャケット14項目 ／ パンツ6項目 ／ 早わかり比較（毛芯・裏地・フォーマル度）／ 用語集"
+  },
+  "categories": [
+    {
+      "sec": "jacket", "no": "J-01", "term": "前釦（まえボタン）", "read": "Front Buttons",
+      "image": "image15.png",
+      "whatis": "前面のボタンの「段数」と「掛け方」。見た目の印象とフォーマル度を最も大きく左右します。シングル＝前が1列（標準）、ダブル＝前を重ねて2列。段返り＝一番上のボタンは飾りで、実際は下を掛ける仕様。",
+      "options": [
+        "シングル2つ釦：最も定番。ビジネス万能でVゾーンが広く脚長効果もあり。",
+        "シングル1つ釦：華やかでドレッシー。パーティー・タキシード向き。",
+        "シングル3つ釦・段返り：英国クラシック。第2釦を掛け落ち着いた印象。",
+        "ダブル6×2／4×1：重厚で格上。貫禄と華やかさ、体格カバーにも。"
+      ],
+      "compare": "迷ったらシングル2つ釦。細く若々しく見せたい→1つ釦やスリム。貫禄・個性を出したい→ダブル。ダブルはフォーマル度が高めです。",
+      "talk": "「1着目でしたらシングル2つ釦が一番使い回しが効きます。2着目で個性を出すならダブルもお洒落ですよ。」"
+    },
+    {
+      "sec": "jacket", "no": "J-02", "term": "衿型（えりがた／ラペル）", "read": "Lapel",
+      "image": "image7.png",
+      "whatis": "下襟（ラペル）の形。顔まわりの印象を決めます。ラペル＝下襟、ゴージライン＝上襟と下襟の境目のこと。",
+      "options": [
+        "ノッチドラペル：襟の切れ込みがV字。最も標準的でビジネス万能。",
+        "ピークドラペル：襟先が上を向いて尖る。華やか・フォーマル。ダブルの定番。",
+        "ショールカラー：切れ込みのない丸い衿。タキシード・式典向き。",
+        "スリム（ナロー）：ラペル幅を細く。モダンでシャープな印象。"
+      ],
+      "compare": "ビジネス中心＝ノッチ。結婚式・パーティーで映えるのはピーク。礼装・式典＝ショール。ラペル幅は広め＝クラシック/貫禄、細め＝モダン。",
+      "talk": "「普段使いはノッチ、結婚式やパーティーで映えるのはピークドラペルです。」"
+    },
+    {
+      "sec": "jacket", "no": "J-03", "term": "ステッチ（AMFステッチ）", "read": "AMF Stitch",
+      "image": "image14.png",
+      "whatis": "襟やポケットの「ふち」に入れる縫い目の装飾。AMF＝手縫い風のステッチのこと。「巾」はふちからの距離（0.5cm等）を指します。",
+      "options": [
+        "ナシ：ステッチを見せない。端正でフォーマル向き。",
+        "AMFステッチ（細60番／太40番）：手縫い風の立体的な縫い目。仕立ての良さが伝わる。",
+        "ミシンステッチ：均一で控えめな仕上がり。",
+        "Wステッチ：2本入れてより装飾的に。"
+      ],
+      "compare": "きちんと感・礼服＝ナシ。こなれ感・雰囲気重視＝AMF。糸は細い＝上品、太い＝カジュアル。色は生地に合わせるのが基本です。",
+      "talk": "「AMFステッチを入れると“仕立ての良さ”が一目で伝わります。フォーマル寄りならナシがすっきりです。」"
+    },
+    {
+      "sec": "jacket", "no": "J-04", "term": "胸ポケット（むねポケット）", "read": "Chest Pocket",
+      "image": "image4.png",
+      "whatis": "左胸のポケット。チーフ（ポケットスクエア）を挿す部分です。ハコ＝箱型の標準、バルカ＝舟形で外に付く、アウト＝貼り付け型。",
+      "options": [
+        "ハコ（標準）：箱型。最もフォーマルで万能。",
+        "バルカ（舟形）：口が丸い舟型。ナポリ仕立ての象徴で柔らかい印象。",
+        "アウト（パッチ）：貼り付け型。カジュアル・ジャケパン向き。"
+      ],
+      "compare": "スーツ＝ハコが間違いなし。柔らかい雰囲気・個性＝バルカ。カジュアル＝アウト。フォーマル度はハコ＞バルカ＞アウトの順。",
+      "talk": "「スーツならハコ型が万能です。柔らかい雰囲気を出したいならバルカも素敵ですよ。」"
+    },
+    {
+      "sec": "jacket", "no": "J-05", "term": "腰ポケット（こしポケット）", "read": "Hip Pocket",
+      "image": "image12.png",
+      "whatis": "両脇の実用ポケット。フラップ（ふた）の有無や形で印象が変わります。両玉＝縁取りした口、スラント＝斜め、チェンジポケット＝右上に付く小ポケット。",
+      "options": [
+        "フラップ（両玉）標準：ふた付き。ビジネス万能。ふたは中に入れてもOK。",
+        "フラップなし（両玉）：すっきり。ドレッシー・フォーマル向き。",
+        "アウト（パッチ）：貼り付け型でカジュアル。",
+        "スラント（斜め）：英国調でシャープ、手を入れやすい。",
+        "チェンジポケット付き：英国クラシックの遊び心。"
+      ],
+      "compare": "標準＝フラップ。式典・ドレッシー＝フラップなし。カジュアル＝パッチ。英国クラシック＝スラントやチェンジポケット。同じ上着でも、ふたを中にしまえば上品になります。",
+      "talk": "「普段はフラップを出して、フォーマルの場ではふたを中にしまうと上品に見えます。」"
+    },
+    {
+      "sec": "jacket", "no": "J-06", "term": "見返し・台場（みかえし／ダイバ）", "read": "Facing",
+      "image": "image16.png",
+      "whatis": "ジャケットを開いた内側・前端の裏側の仕立て。台場（ダイバ）＝内ポケット周りを共地で額縁のように美しく仕立てる高級仕様のこと。",
+      "options": [
+        "ダイバなし（標準）：通常の内側仕立て。",
+        "台場（ダイバ）仕様：内側を共地で仕立てる。高級感のある“見えないお洒落”。",
+        "耳入れ：生地の耳（セルビッジ）を活かした通好みのディテール。"
+      ],
+      "compare": "コスパ重視＝標準。高級感・こだわり＝台場。脱いだ時やハンガーに掛けた時に“差”が出る部分です。目立たないぶん、分かる人には響きます。",
+      "talk": "「脱いだ時やジャケットを掛けた時に上質さが出るのが台場仕様です。」"
+    },
+    {
+      "sec": "jacket", "no": "J-07", "term": "パッド（肩パッド）", "read": "Shoulder Pad",
+      "image": "image5.png",
+      "whatis": "肩に入れる芯。肩のラインとボリュームを作ります。厚みで肩の“表情”が変わり、体型の見え方にも影響します。",
+      "options": [
+        "特ウス（標準・0.3cm）：自然な肩。現代の主流。",
+        "極ウス（0.2cm）：さらに自然で柔らか。ナポリ的な肩。",
+        "並（1.0cm）：しっかりした肩。かっちり・体格カバー。",
+        "厚（1.3cm）：重厚で威厳のある肩。クラシック。",
+        "ナシ（台芯のみ）：最も柔らかいアンコン仕様。"
+      ],
+      "compare": "自然な肩＝特ウス／極ウス。かっちり・貫禄＝並／厚。柔らか軽い＝ナシ。なで肩の方は少し厚め、いかり肩の方は薄めがバランス良好です。",
+      "talk": "「自然な肩がお好みなら薄め、かっちり見せたいなら厚めにもできます。」"
+    },
+    {
+      "sec": "jacket", "no": "J-08", "term": "裏仕様（裏地）", "read": "Lining",
+      "image": "image1.png",
+      "whatis": "ジャケット内側の裏地の付け方。着心地・通気性・季節感を左右します。背抜き＝背中の裏地を省略、総裏＝全体に裏地、アンコン＝裏地も芯も極力省いた軽い仕立て。",
+      "options": [
+        "背抜き（標準）：背中の裏地を省略。通気性◎で春夏・オールシーズン向き。",
+        "総裏：全体に裏地。丈夫で保温性◎、シルエットが安定。秋冬・寒がりの方に。",
+        "半裏：背抜きと総裏の中間。",
+        "アンコン仕立：裏地・芯を極力省いた最軽量。春夏・カジュアル。"
+      ],
+      "compare": "迷ったら背抜き。寒がり・秋冬・きれいなシルエット重視＝総裏。暑がり・軽さ重視＝アンコン。同じ生地でも裏地で“季節の快適さ”が大きく変わります。",
+      "talk": "「暑がりの方は背抜き、寒い時期や型崩れを防ぎたい方は総裏がおすすめです。」"
+    },
+    {
+      "sec": "jacket", "no": "J-09", "term": "背仕様（ベント）", "read": "Vent",
+      "image": "image8.png",
+      "whatis": "上着の後ろ裾の切れ込み（ベント）。動きやすさとシルエットに関わります。センターベント＝中央1本、サイドベンツ＝両脇2本、ノーベント＝切れ込みなし。",
+      "options": [
+        "センターベント（標準）：中央に1本。ビジネス万能でアクティブ。",
+        "サイドベンツ：両脇に2本。英国調でエレガント、ヒップをカバー。",
+        "ノーベント：切れ込みなし。最もフォーマルで礼服・タキシード向き。"
+      ],
+      "compare": "標準＝センター。上品・体型カバー・クラシック＝サイドベンツ。礼装＝ノーベント。ポケットに手を入れても崩れにくいのはサイドベンツです。",
+      "talk": "「普段使いはセンター、少し上品に見せたいならサイドベンツが人気です。」"
+    },
+    {
+      "sec": "jacket", "no": "J-10", "term": "袖仕様・袖釦（そでボタン）", "read": "Sleeve & Cuff",
+      "image": "image3.png",
+      "whatis": "袖口のボタンの数・並べ方と、袖口が実際に開くか。本開き（本切羽）＝ボタンで開閉できる本格仕様、開きみせ＝飾りボタン（標準）、重ね（キッシング）＝ボタンを重ねて並べる。",
+      "options": [
+        "開きみせ（標準）：飾りボタン。あとで袖丈を直しやすい。",
+        "本開き（本切羽）：実際に開く本格仕様。オーダーの証、袖まくりも可。",
+        "釦4個（標準）／3個／2個：個数で印象を調整。",
+        "重ね（キッシング）／並び：ボタンの並べ方を選択。"
+      ],
+      "compare": "汎用・お直し重視＝開きみせ。本格・こだわり＝本切羽（※袖丈直しはしにくくなる点に注意）。ボタン数は4個が標準、少ないほどモダンな印象。",
+      "talk": "「本切羽はオーダーならではの仕様ですが、後で袖丈を詰めにくい点だけご注意くださいね。」"
+    },
+    {
+      "sec": "jacket", "no": "J-11", "term": "前カット（フロントカット）", "read": "Front Cut",
+      "image": "image33.png",
+      "whatis": "上着の前裾（すそ）のカーブの削り方。丸みの大小で脚の見え方や印象が変わります。",
+      "options": [
+        "レギュラー：標準的な丸み。万能。",
+        "カッタウェイ：前裾を大きく斜めにカット。脚長・シャープ・スタイリッシュ。",
+        "ミラノカッタウェイ（スーパー）：さらに大きく削る。モードで個性的。",
+        "スクエア（角）：四角く落とす。ダブルやクラシックに好相性。"
+      ],
+      "compare": "万能＝レギュラー。細く脚長に見せたい・モダン＝カッタウェイ。クラシック／ダブル＝角ばった裾。削るほどシャープでドレッシーになります。",
+      "talk": "「脚を長くスタイル良く見せたい方にはカッタウェイが人気です。」"
+    },
+    {
+      "sec": "jacket", "no": "J-12", "term": "衿穴・衿仕立て（ラペルホール）", "read": "Lapel Hole & Finish",
+      "image": "image2.png",
+      "whatis": "左襟の穴（フラワーホール）の仕様と、衿まわりの縫製の仕上げ方。仕立ての質感が出る部分です。手穴＝手縫いの穴かがり、額縁＝角をきれいに囲う丁寧な仕上げ。",
+      "options": [
+        "半メス（標準）：穴が半分開いた標準仕様。",
+        "全メス（本開き）：穴が貫通し、花（ブートニエール）を挿せる本格仕様。",
+        "手穴（ハンドソーン）：手縫いの穴かがり。高級感・立体感。",
+        "額縁仕上げ：角を端正に囲うクラシックな仕上げ。"
+      ],
+      "compare": "標準＝半メス。こだわり・高級感＝手穴／全メス。目立たないディテールですが、分かる人には響きます。結婚式で花を挿す予定があれば本開きが便利です。",
+      "talk": "「襟に花を挿す機会がある方は、本開きの手穴が本格的でおすすめです。」"
+    },
+    {
+      "sec": "jacket", "no": "J-13", "term": "毛芯（けしん／キャンバス）", "read": "Canvas",
+      "image": "image17.png",
+      "whatis": "ジャケットの土台となる芯地。着心地・立体感・耐久性を決める“スーツの骨格”です。接着芯＝芯を生地に接着、総毛芯（フルキャンバス）＝毛芯を糸で縫い留めて立体成形、バブリング＝接着が剥がれ表面が波打つ経年劣化。",
+      "options": [
+        "接着（標準）：芯を接着。軽く手頃、シワに強い。エントリー向け。",
+        "ソフト総毛芯（フルキャンバス）※：毛芯を縫い留め。体に馴染み立体的、長く着られる。",
+        "ハード総毛芯※：張りが強くかっちり。クラシック。",
+        "ナポリ毛芯※：軽く柔らかい。ナポリ仕立て向き。",
+        "毛芯なし（接着のみ）／アンコン：最軽量でカジュアル。"
+      ],
+      "compare": "コスパ・軽さ＝接着。着込むほど馴染み長持ち＝総毛芯。かっちり＝ハード、柔らか＝ソフト／ナポリ。接着は経年でバブリング（表面の波打ち）が出ることがあります。",
+      "talk": "「長く大切に着られるのは総毛芯です。まず1着お手頃にという方は接着でも十分きれいに仕上がりますよ。」"
+    },
+    {
+      "sec": "jacket", "no": "J-14", "term": "肩先（肩の作り）", "read": "Shoulder Line",
+      "image": "image19.png",
+      "whatis": "肩から袖の付け根のシルエットの作り方。肩の“表情”を決めます。ナチュラル＝肩線に沿う自然な肩、ビルドアップ＝芯で持ち上げる、ロープド＝袖山を高く盛るイタリア調、シャツ袖（マニカカミーチャ）＝シャツのように柔らかく付ける。",
+      "options": [
+        "ナチュラル（標準）：自然な肩線。万能・現代的。",
+        "ビルドアップ：肩をしっかり作る。かっちり・威厳・体型カバー。",
+        "ドロップ：肩先を柔らかく落とす。リラックス・イタリア調。",
+        "ロープド（コンケーブ）：袖山が盛り上がる英国クラシック、力強い。",
+        "シャツ袖：最も柔らかい。ナポリ・カジュアル。"
+      ],
+      "compare": "自然＝ナチュラル。かっちり＝ビルドアップ／ロープド。柔らか＝ドロップ／シャツ袖。なで肩・いかり肩に合わせて微調整すると、より美しく見えます。",
+      "talk": "「かっちり見せたいならビルドアップ、柔らかく自然にならナチュラルやシャツ袖です。」"
+    },
+    {
+      "sec": "pants", "no": "P-01", "term": "タック", "read": "Pleats",
+      "image": "image26.png",
+      "whatis": "前の折り込みヒダ。腰まわりのゆとりとシルエットを決めます。ノータック＝ヒダなし、ワンタック＝1本、ツータック＝2本。",
+      "options": [
+        "ノータック：ヒダなし。すっきりモダン・細身。",
+        "ワンタック：ヒダ1本。程よいゆとりで最もバランスが良い。",
+        "ツータック：ヒダ2本。ゆったりクラシック、動きやすく腰回りをカバー。"
+      ],
+      "compare": "細見せ・トレンド＝ノータック。万能＝ワンタック。楽さ・体型カバー・クラシック＝ツータック。座り仕事が多い方はタックありが快適です。",
+      "talk": "「スッキリ見せたいならノータック、楽さやゆとり重視ならワンタック・ツータックです。」"
+    },
+    {
+      "sec": "pants", "no": "P-02", "term": "オビ（ウエストバンド・持ち出し）", "read": "Waistband",
+      "image": "image25.png",
+      "whatis": "パンツ最上部のベルト部分と、前の留め（持ち出し）の仕様。持ち出し＝前の合わせを留める延長部分、グルカ＝ベルトを使わずバックルで留める仕様。",
+      "options": [
+        "無（標準）：通常のフック留め。",
+        "持ち出し付き（サンカク／シカク／ラウンド／小丸）：留めを延長し先端の形を選べる。",
+        "グルカ仕様：バックル留めでベルト不要。ドレッシーで個性派。"
+      ],
+      "compare": "標準＝無。きれいめ・こだわり＝持ち出し付き。個性・ベルトレス＝グルカ。先端の形はサンカク＝シャープ、丸＝柔らかい印象になります。",
+      "talk": "「ベルトなしで穿きたい方には、バックル留めのグルカ仕様が人気です。」"
+    },
+    {
+      "sec": "pants", "no": "P-03", "term": "脇ポケット（脇P）", "read": "Side Pocket",
+      "image": "image31.png",
+      "whatis": "左右の腰にある、手を入れるポケット。口の向きで見た目と使い勝手が変わります。",
+      "options": [
+        "ナナメ（標準）：斜め口。手を入れやすく万能。",
+        "タテ（縦）：脇の縫い目に沿う縦口。すっきり目立たない、英国調。",
+        "L字（エル）：L字型の口。ノータックと好相性。"
+      ],
+      "compare": "万能・実用＝ナナメ。見た目すっきり＝タテ。座った状態で手を入れやすいのはナナメ口です。",
+      "talk": "「見た目すっきりなら縦、実用性で選ぶならナナメ口です。」"
+    },
+    {
+      "sec": "pants", "no": "P-04", "term": "ピスポケット（後ろポケット）", "read": "Back Pocket",
+      "image": "image34.png",
+      "whatis": "お尻側のポケット。玉縁の仕様とボタン留めの有無を選べます。両玉＝上下に縁取り、片玉＝片側だけ縁取り、フラップ＝ふた。",
+      "options": [
+        "両玉（左右）：両側に付く。標準的できれい。",
+        "片玉：片側のみ縁取り。すっきり。",
+        "フラップ付き：ふた付きで中身が落ちにくい。ややカジュアル。",
+        "ボタン留め：留め付きで実用的・上品。"
+      ],
+      "compare": "標準＝両玉。実用重視＝ボタン留め／フラップ。左右どちらか片方だけ付けることも可能です。スマホや財布を入れるならボタン留めが安心。",
+      "talk": "「スマホや長財布を入れることが多いなら、ボタン留めが安心ですよ。」"
+    },
+    {
+      "sec": "pants", "no": "P-05", "term": "ループ（ベルトループ）", "read": "Belt Loops",
+      "image": "image30.png",
+      "whatis": "ベルトを通す輪。本数・太さ・仕様を選べます。標準は6本（ウエスト89cm以下推奨）。",
+      "options": [
+        "有（標準）：通常のループ。本数は6本が標準。",
+        "無：ループなし。サスペンダーやグルカ仕様向き、すっきり。",
+        "バックル止めループ：サイドアジャスター等と組み合わせる。",
+        "本数（6／7／8本）・巾指定：太めはカジュアル、細めは上品。"
+      ],
+      "compare": "標準＝有6本。ベルトレス＝無。太いベルトを使う方は、太め・本数多めにすると安定します。",
+      "talk": "「サスペンダー派の方は、ループ無しもすっきりして素敵です。」"
+    },
+    {
+      "sec": "pants", "no": "P-06", "term": "裾仕様（すそ）", "read": "Hem",
+      "image": "image35.png",
+      "whatis": "パンツの裾の始末。折り返しの有無で印象が変わります。シングル＝折り返しなし、ダブル（カフス）＝折り返しあり、モーニングカット＝前を長く後ろを短く斜めに。",
+      "options": [
+        "シングル：折り返しなし。すっきりで礼服にも万能。",
+        "ダブル（ミシン止め）：折り返しあり。ドレッシー・こなれ感、落ち感◎。",
+        "ダブル（手糸止め）※：手縫い留めの上級仕様。",
+        "モーニングカット：靴に沿って斜めにカット、脚長効果。"
+      ],
+      "compare": "フォーマル・礼服＝シングル。お洒落・ビジネスカジュアル＝ダブル（幅4cm前後が標準）。冠婚葬祭はシングルが無難です。",
+      "talk": "「礼服はシングル、普段のお洒落なら今はダブルが人気です。」"
+    }
+  ],
+  "tables": [
+    {
+      "title": "早わかり比較① 毛芯（キャンバス）",
+      "lead": "「接着と総毛芯、何が違うの？」への即答用。スーツの骨格＝毛芯です。",
+      "headers": ["", "接着芯（標準）", "半毛芯", "総毛芯（フルキャンバス）※"],
+      "rows": [
+        ["作り方", "芯を生地に接着", "胸から上だけ毛芯", "全体に毛芯を糸で縫い留め"],
+        ["着心地", "軽い・均一", "バランス型", "体に馴染み立体的"],
+        ["価格", "お手頃", "中間", "高め"],
+        ["耐久・経年", "バブリングの可能性", "良い", "着込むほど馴染む・長持ち"],
+        ["おすすめ", "1着目・コスパ重視", "バランス重視", "長く着たい・本格志向"]
+      ]
+    },
+    {
+      "title": "早わかり比較② 裏仕様（裏地）",
+      "lead": "「背抜きと総裏、どっちがいい？」への即答用。季節と体質で選びます。",
+      "headers": ["", "アンコン", "背抜き（標準）", "半裏", "総裏"],
+      "rows": [
+        ["裏地の量", "ほぼ無し", "背中を省略", "中間", "全体にあり"],
+        ["通気性", "最高", "良い", "中間", "低め"],
+        ["保温性", "低い", "低め", "中間", "高い"],
+        ["シルエット", "柔らかい", "自然", "安定", "最も安定"],
+        ["向く季節・人", "真夏・軽さ重視", "春夏・オールシーズン", "オールシーズン", "秋冬・寒がり"]
+      ]
+    },
+    {
+      "title": "早わかり比較③ フォーマル度の目安",
+      "lead": "「どっちが格上？」の質問に。右にいくほどフォーマル、左にいくほどカジュアル。",
+      "headers": ["部位", "カジュアル寄り　←", "→　フォーマル寄り"],
+      "rows": [
+        ["前釦", "パッチ多いシングル", "シングル2釦 → ダブル → 1釦"],
+        ["衿型", "ノッチ", "ノッチ → ピーク → ショール"],
+        ["ベント", "センターベント", "サイドベンツ → ノーベント"],
+        ["ポケット", "アウト（パッチ）", "フラップ → フラップなし（両玉）"],
+        ["裾（パンツ）", "ダブル", "ダブル → シングル"],
+        ["毛芯・裏地", "アンコン", "接着 → 総毛芯／総裏"]
+      ]
+    }
+  ],
+  "glossary": [
+    {"t": "ラペル", "d": "下襟のこと。ノッチ・ピーク・ショールなど形がある。"},
+    {"t": "ゴージライン", "d": "上襟と下襟（ラペル）の境目の縫い目。"},
+    {"t": "AMFステッチ", "d": "襟やポケットのふちに入れる手縫い風の飾りステッチ。"},
+    {"t": "玉縁（両玉）", "d": "ポケット口を細く縁取りした仕様。上下2本＝両玉。"},
+    {"t": "フラップ", "d": "ポケットのふた。雨よけ兼装飾。中にしまうと上品。"},
+    {"t": "ベント", "d": "上着の後ろ裾の切れ込み。センター／サイド／ノー。"},
+    {"t": "台場（ダイバ）", "d": "内ポケット周りを共地で美しく仕立てる高級仕様。"},
+    {"t": "本切羽（本開き）", "d": "袖口のボタンで実際に開閉できる本格仕様。"},
+    {"t": "キッシング", "d": "袖ボタンを少し重ねて並べる付け方。"},
+    {"t": "毛芯／キャンバス", "d": "ジャケットの土台となる芯地。総毛芯＝縫い留めの本格仕様。"},
+    {"t": "バブリング", "d": "接着芯が経年で剥がれ、表面が波打つ現象。"},
+    {"t": "アンコン", "d": "アンコンストラクテッド。芯・裏地を省いた軽い仕立て。"},
+    {"t": "背抜き／総裏", "d": "背中の裏地を省く（背抜き）／全体に付ける（総裏）。"},
+    {"t": "ナポリ仕立て", "d": "軽く柔らかいイタリア・ナポリ風の仕立て。バルカ胸Pなど。"},
+    {"t": "カッタウェイ", "d": "上着の前裾を大きく斜めに削る形。脚長・シャープ。"},
+    {"t": "タック", "d": "パンツ前の折りヒダ。ノー／ワン／ツー。"},
+    {"t": "持ち出し", "d": "パンツ前の留めを延長した部分。先端の形を選べる。"},
+    {"t": "グルカ", "d": "ベルトを使わずバックルで留めるパンツ仕様。"},
+    {"t": "ピスポケット", "d": "パンツのお尻側のポケット。両玉・ボタン留めなど。"},
+    {"t": "シングル／ダブル（裾）", "d": "裾の折り返しなし（シングル）／あり（ダブル）。"}
+  ]
+}
+;
+
+const hintText = {
+  jacket:"ジャケットの各仕様。カードの「主な選択肢」がそのまま比較表です。写真クリックで拡大。",
+  pants:"パンツの各仕様。カードの「主な選択肢」がそのまま比較表です。写真クリックで拡大。",
+  tables:"「これとこれ、何が違うの？」に即答するための早わかり比較表。",
+  glossary:"接客中によく出る専門用語の一覧。検索で絞り込めます。"
+};
+
+function esc(s){return (s||"").replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
+function paidize(s){return esc(s).replace(/※/g,'<span class="paid">※</span>');}
+function optRow(o){
+  const i=o.indexOf('：');
+  let name=o, desc='';
+  if(i>=0){name=o.slice(0,i);desc=o.slice(i+1);}
+  return `<tr><td class="oname">${paidize(name)}</td><td>${paidize(desc)}</td></tr>`;
+}
+function card(c){
+  return `<div class="card ${c.sec}" data-text="${esc(c.term+' '+c.read+' '+c.whatis+' '+c.options.join(' ')+' '+c.compare+' '+c.talk).replace(/"/g,'')}">
+    <div class="head"><div><div class="term">${esc(c.term)}</div><div class="read">${esc(c.read)}</div></div>
+      <div class="no">${esc(c.no)}</div></div>
+    <div class="body">
+      <div class="photo"><img loading="lazy" src="media/${esc(c.image)}" alt="${esc(c.term)}"></div>
+      <div class="blk whatis"><div class="lbl">💡 これは？（かんたん解説）</div><div class="txt">${paidize(c.whatis)}</div></div>
+      <div><div class="opt-lbl">📋 主な選択肢（そのまま比較できます）</div>
+        <table class="opts">${c.options.map(optRow).join('')}</table></div>
+      <div class="blk compare"><div class="lbl">⚖️ 選び方・比較</div><div class="txt">${paidize(c.compare)}</div></div>
+      <div class="blk talk"><div class="lbl">🗣️ 接客トーク例</div><div class="txt">${paidize(c.talk)}</div></div>
+    </div></div>`;
+}
+function cmpTable(t){
+  const head=`<tr>${t.headers.map(h=>`<th>${esc(h)}</th>`).join('')}</tr>`;
+  const rows=t.rows.map(r=>`<tr>${r.map(x=>`<td>${paidize(x)}</td>`).join('')}</tr>`).join('');
+  return `<div class="ctable-wrap" data-text="${esc(t.title+' '+t.lead+' '+t.rows.flat().join(' ')).replace(/"/g,'')}">
+    <h3>${esc(t.title)}</h3><div class="lead">${esc(t.lead)}</div>
+    <table class="cmp"><thead>${head}</thead><tbody>${rows}</tbody></table></div>`;
+}
+function glossItem(g){
+  return `<div class="gitem" data-text="${esc(g.t+' '+g.d).replace(/"/g,'')}"><b>${esc(g.t)}</b> ： ${esc(g.d)}</div>`;
+}
+
+// render
+document.getElementById('view-jacket').innerHTML =
+  `<div class="section-title">JACKET／ジャケットの仕様</div><div class="grid">`+
+  DATA.categories.filter(c=>c.sec==='jacket').map(card).join('')+`</div>`;
+document.getElementById('view-pants').innerHTML =
+  `<div class="section-title">PANTS／パンツの仕様</div><div class="grid">`+
+  DATA.categories.filter(c=>c.sec==='pants').map(card).join('')+`</div>`;
+document.getElementById('view-tables').innerHTML =
+  DATA.tables.map(cmpTable).join('');
+document.getElementById('view-glossary').innerHTML =
+  `<div class="section-title">用語集</div><div class="gloss">`+DATA.glossary.map(glossItem).join('')+`</div>`;
+
+// tabs
+let current='jacket';
+const views=['jacket','pants','tables','glossary'];
+function setView(v){
+  current=v;
+  views.forEach(x=>document.getElementById('view-'+x).classList.toggle('hidden',x!==v));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.view===v));
+  document.getElementById('hint').textContent=hintText[v];
+  applySearch();
+}
+document.getElementById('tabs').addEventListener('click',e=>{
+  if(e.target.dataset.view) setView(e.target.dataset.view);
+});
+
+// search
+const q=document.getElementById('q'), qx=document.getElementById('qx');
+function clearMarks(el){el.querySelectorAll('mark').forEach(m=>{m.replaceWith(m.textContent);});el.normalize&&el.normalize();}
+function applySearch(){
+  const term=q.value.trim().toLowerCase();
+  qx.style.display=term?'block':'none';
+  const containerId='view-'+current;
+  const container=document.getElementById(containerId);
+  const items=container.querySelectorAll('[data-text]');
+  let visible=0;
+  items.forEach(it=>{
+    const hit = !term || it.dataset.text.toLowerCase().includes(term);
+    it.classList.toggle('hidden',!hit);
+    if(hit)visible++;
+  });
+  document.getElementById('noresult').classList.toggle('hidden',visible>0);
+}
+q.addEventListener('input',applySearch);
+qx.addEventListener('click',()=>{q.value='';applySearch();q.focus();});
+
+// lightbox
+const lb=document.getElementById('lb'), lbimg=document.getElementById('lbimg');
+document.body.addEventListener('click',e=>{
+  const img=e.target.closest('.photo img');
+  if(img){lbimg.src=img.src;lb.classList.add('open');}
+  else if(e.target.closest('.lb')){lb.classList.remove('open');}
+});
+
+setView('jacket');
+</script>
+</body>
+</html>
