@@ -6,7 +6,7 @@
 <title>オーダースーツ 仕様ガイド｜比較ツール</title>
 <style>
   :root{
-    --navy:#1f3a5c; --navy2:#2a4d78; --teal:#21544f; --gold:#c4a45a; --gold-l:#ead296;
+    --navy:#1f3a5c; --navy2:#2a4d78; --teal:#21544f; --plum:#7a3442; --lplum:#f4eaee; --gold:#c4a45a; --gold-l:#ead296;
     --cream:#f7f3e9; --lblue:#e8f0f7; --lgold:#fbf3e1; --lgreen:#e9f3eb;
     --ink:#232323; --muted:#6b6b6b; --line:#e2ddd2; --bg:#f4f2ee; --white:#fff;
   }
@@ -43,6 +43,12 @@
   .card .head{background:var(--navy);color:#fff;padding:12px 16px;display:flex;justify-content:space-between;
     align-items:center;gap:8px}
   .card.pants .head{background:var(--teal)}
+  .card.vest .head{background:var(--plum)}
+  .vphoto{width:100%;background:var(--lplum);border:1px solid var(--line);border-radius:8px;padding:18px 14px;
+    text-align:center;display:flex;flex-direction:column;gap:8px;align-items:center}
+  .vphoto .vtag{background:var(--plum);color:#fff;font-size:12px;font-weight:700;padding:5px 14px;border-radius:14px}
+  .vphoto .vterm{font-size:18px;font-weight:700;color:var(--plum)}
+  .vphoto .vsee{font-size:12.5px;color:var(--ink);background:#fff;border-radius:8px;padding:8px 10px;margin-top:2px}
   .card .head .term{font-size:17px;font-weight:700}
   .card .head .read{font-size:11px;color:var(--gold-l);margin-top:2px}
   .card .head .no{font-size:11px;background:var(--gold);color:var(--navy);padding:3px 9px;border-radius:12px;
@@ -109,6 +115,7 @@
       <div class="tabs" id="tabs">
         <button class="tab active" data-view="jacket">ジャケット</button>
         <button class="tab" data-view="pants">パンツ</button>
+        <button class="tab" data-view="vest">ベスト</button>
         <button class="tab" data-view="tables">早わかり比較</button>
         <button class="tab" data-view="glossary">用語集</button>
       </div>
@@ -120,6 +127,7 @@
   <div class="hint" id="hint"></div>
   <div id="view-jacket"></div>
   <div id="view-pants" class="hidden"></div>
+  <div id="view-vest" class="hidden"></div>
   <div id="view-tables" class="hidden"></div>
   <div id="view-glossary" class="hidden"></div>
   <div class="noresult hidden" id="noresult">該当する項目が見つかりませんでした。別のキーワードでお試しください。</div>
@@ -147,7 +155,8 @@ const DATA = {
     "compare": "選び方・比較",
     "talk": "接客トーク例",
     "jacket": "JACKET／ジャケット",
-    "pants": "PANTS／パンツ"
+    "pants": "PANTS／パンツ",
+    "vest": "VEST／ベスト"
   },
   "howto": {
     "title": "このガイドの使い方",
@@ -163,7 +172,7 @@ const DATA = {
       "「標準」と書かれた仕様を選べば、まず失敗しません",
       "フォーマル度・カジュアル度の目安も記載しています"
     ],
-    "toc": "目次： ジャケット14項目 ／ パンツ6項目 ／ 早わかり比較（毛芯・裏地・フォーマル度）／ 用語集"
+    "toc": "目次（オーダーシート順）： ジャケット14項目 → パンツ6項目 → ベスト8項目 ／ 早わかり比較（毛芯・裏地・フォーマル度）／ 用語集"
   },
   "categories": [
     {
@@ -423,6 +432,108 @@ const DATA = {
       ],
       "compare": "フォーマル・礼服＝シングル。お洒落・ビジネスカジュアル＝ダブル（幅4cm前後が標準）。冠婚葬祭はシングルが無難です。",
       "talk": "「礼服はシングル、普段のお洒落なら今はダブルが人気です。」"
+    },
+    {
+      "sec": "vest", "no": "V-01", "term": "前釦（ベスト）", "read": "Vest Front Buttons", "image": "",
+      "seealso": "考え方はジャケットの前釦と同じ。ジャケットと釦位置を合わせると統一感が出ます。",
+      "whatis": "ベスト（ジレ）前面のボタンの段数と単複。3ピースの印象を左右します。数字は「見えるボタン数」。シングル＝1列、ダブル＝2列で襟付きが多い上級仕様。",
+      "options": [
+        "シングル5×5：定番。5つ釦。すっきり上品で万能。",
+        "シングル4×4／6×6：ボタン数違い。少なめ＝モダン、多め＝クラシック。",
+        "シングル6×5：一番下を外して着る英国流の着こなし前提。",
+        "ダブル（角あり／角なし）※：襟付きで重厚・ドレッシー。上級者向け。"
+      ],
+      "compare": "定番はシングル5×5。ジャケットの釦位置と合わせると統一感が出ます。ダブルは華やかですが上級者向け（※有料）。",
+      "talk": "「ベストはシングル5つ釦が万能です。個性を出すなら襟付きのダブルも素敵ですよ。」"
+    },
+    {
+      "sec": "vest", "no": "V-02", "term": "衿（ベスト）", "read": "Vest Collar", "image": "",
+      "seealso": "衿の形はジャケットの衿型（ノッチ・ピーク・ショール）と同じ考え方です。",
+      "whatis": "ベストの衿の有無と形。衿付きは3ピースをより上質・ドレッシーに見せます。標準は衿なし、U型＝開きが深い定番形、衿付き＝ラペル付きの上級仕様。",
+      "options": [
+        "なし（標準）：衿のないすっきりした定番。",
+        "U型※：開きが深いV～U字の定番形。",
+        "衿付ノッチ※：ノッチラペル付き。ジャケットと揃えて上品に。",
+        "衿付ピーク※：ピークラペル付き。華やか・ドレッシー。",
+        "ショールA／B／C※：丸みのある衿。フォーマル・個性。"
+      ],
+      "compare": "標準は衿なし。ドレッシーさ・華やかさを足すなら衿付き（ノッチ／ピーク／ショール）。※衿付きは有料です。",
+      "talk": "「衿付きベストにすると一気に華やかで上質な印象になりますよ。」"
+    },
+    {
+      "sec": "vest", "no": "V-03", "term": "胸ポケット（ベスト）", "read": "Vest Chest Pocket", "image": "",
+      "seealso": "ハコ・両玉などの用語はジャケットの胸ポケットと同じです。",
+      "whatis": "ベスト胸のポケット。チーフや小物用。標準はなし、装飾したい場合にハコ等を付けます。",
+      "options": [
+        "なし（標準）：すっきり。",
+        "左ハコ：左胸に箱型ポケット。",
+        "左右ハコ：左右に箱型。",
+        "左両玉：左に玉縁ポケット。"
+      ],
+      "compare": "すっきり＝なし。装飾・実用＝ハコ。ジャケットの胸ポケットと合わせると統一感が出ます。",
+      "talk": "「シンプルがお好みならなし、装いのアクセントにはハコ型もおすすめです。」"
+    },
+    {
+      "sec": "vest", "no": "V-04", "term": "腰ポケット（ベスト）", "read": "Vest Hip Pocket", "image": "",
+      "seealso": "玉縁・フラップの用語はジャケットの腰ポケットと同じです。",
+      "whatis": "ベスト腰の左右ポケット。時計や小物用。標準はハコ型。",
+      "options": [
+        "ハコ（標準）：箱型で実用的。",
+        "両玉：玉縁仕様ですっきり。",
+        "両玉フラップ：ふた付きで中身が落ちにくい。",
+        "なし：最もすっきり。"
+      ],
+      "compare": "標準＝ハコ。すっきり＝なし／両玉。実用＝フラップ。ジャケットの腰ポケットと雰囲気を揃えると綺麗です。",
+      "talk": "「小物を入れるならハコ、見た目重視なら両玉やなしもすっきりします。」"
+    },
+    {
+      "sec": "vest", "no": "V-05", "term": "ステッチ（ベスト）", "read": "Vest Stitch", "image": "",
+      "seealso": "AMF＝手縫い風ステッチ。ジャケットのステッチと揃えるのが基本です。",
+      "whatis": "ベストのふち（前端・ポケット等）のステッチ。ジャケットの仕様と合わせるのが基本です。",
+      "options": [
+        "なし（標準）：ステッチを見せない端正な仕上げ。",
+        "AMF※：手縫い風の立体的なステッチ。",
+        "ミシン※：均一で控えめなステッチ。"
+      ],
+      "compare": "ジャケットのステッチ仕様と揃えると統一感が出ます。フォーマル＝なし、雰囲気＝AMF（※有料）。",
+      "talk": "「ジャケットと同じステッチにすると、セットで見た時に統一感が出ます。」"
+    },
+    {
+      "sec": "vest", "no": "V-06", "term": "尾錠（びじょう）", "read": "Back Buckle", "image": "",
+      "seealso": "",
+      "whatis": "ベスト背面のベルト状の締め具（バックル）。背中のフィットを微調整できる、ベストならではのパーツです。",
+      "options": [
+        "有・絞りどめ（標準）：ベルトで調整可能。",
+        "有・両絞りどめ：左右で調整。",
+        "有・固定式：調整なしのすっきり仕様。",
+        "なし：尾錠を付けない。"
+      ],
+      "compare": "フィットを微調整したい＝絞りどめ。すっきり見せたい＝固定式／なし。体型が変わりやすい方は絞りどめが便利です。",
+      "talk": "「背中の尾錠でウエストを微調整できるので、フィット感を保ちやすいですよ。」"
+    },
+    {
+      "sec": "vest", "no": "V-07", "term": "背表（せおもて）", "read": "Back Fabric", "image": "",
+      "seealso": "",
+      "whatis": "ベスト背面の生地をどうするか。背中も表地にすると、上着を脱いでも様になる上級仕様になります。標準は裏地（ジャケットと共通）。",
+      "options": [
+        "裏地（JK裏共・標準）：背中は裏地。ジャケットと共通でコスパ良。",
+        "表地背※：背中も表地。上着を脱いでも綺麗で高級感。",
+        "裏地指定：背中の裏地を指定。"
+      ],
+      "compare": "コスパ・標準＝裏地。上着を脱ぐ場面が多い方＝表地背（※有料）。クールビズでベスト姿になる方に人気です。",
+      "talk": "「上着を脱ぐ機会が多い方は、背中も表地にすると脱いでも様になります。」"
+    },
+    {
+      "sec": "vest", "no": "V-08", "term": "中裏（なかうら）", "read": "Vest Lining", "image": "",
+      "seealso": "",
+      "whatis": "ベスト内側の裏地。ジャケットと共通にするか、別に指定するか。見えない部分の遊びを入れられます。",
+      "options": [
+        "JK裏共（標準）：ジャケットと同じ裏地で統一。",
+        "裏地指定：好みの裏地を指定。",
+        "縞：ストライプ柄の裏地で個性を。"
+      ],
+      "compare": "標準＝ジャケットと共通。遊び・個性＝指定や縞柄。見えない部分のこだわりとして人気です。",
+      "talk": "「見えない裏地にこだわると、脱いだ時のさりげないお洒落になりますよ。」"
     }
   ],
   "tables": [
@@ -492,6 +603,7 @@ const DATA = {
 const hintText = {
   jacket:"ジャケットの各仕様。カードの「主な選択肢」がそのまま比較表です。写真クリックで拡大。",
   pants:"パンツの各仕様。カードの「主な選択肢」がそのまま比較表です。写真クリックで拡大。",
+  vest:"ベスト（ジレ／スリーピース用）の各仕様。オーダーシートでは最後に確認する項目です。",
   tables:"「これとこれ、何が違うの？」に即答するための早わかり比較表。",
   glossary:"接客中によく出る専門用語の一覧。検索で絞り込めます。"
 };
@@ -505,11 +617,15 @@ function optRow(o){
   return `<tr><td class="oname">${paidize(name)}</td><td>${paidize(desc)}</td></tr>`;
 }
 function card(c){
-  return `<div class="card ${c.sec}" data-text="${esc(c.term+' '+c.read+' '+c.whatis+' '+c.options.join(' ')+' '+c.compare+' '+c.talk).replace(/"/g,'')}">
+  const media = (c.image && c.image.trim())
+    ? `<div class="photo"><img loading="lazy" src="media/${esc(c.image)}" alt="${esc(c.term)}"></div>`
+    : `<div class="vphoto"><div class="vtag">VEST／ベスト（ジレ）</div><div class="vterm">${esc(c.term)}</div>`+
+      (c.seealso&&c.seealso.trim()?`<div class="vsee">🔗 ${esc(c.seealso)}</div>`:``)+`</div>`;
+  return `<div class="card ${c.sec}" data-text="${esc(c.term+' '+c.read+' '+c.whatis+' '+c.options.join(' ')+' '+c.compare+' '+c.talk+' '+(c.seealso||'')).replace(/"/g,'')}">
     <div class="head"><div><div class="term">${esc(c.term)}</div><div class="read">${esc(c.read)}</div></div>
       <div class="no">${esc(c.no)}</div></div>
     <div class="body">
-      <div class="photo"><img loading="lazy" src="media/${esc(c.image)}" alt="${esc(c.term)}"></div>
+      ${media}
       <div class="blk whatis"><div class="lbl">💡 これは？（かんたん解説）</div><div class="txt">${paidize(c.whatis)}</div></div>
       <div><div class="opt-lbl">📋 主な選択肢（そのまま比較できます）</div>
         <table class="opts">${c.options.map(optRow).join('')}</table></div>
@@ -535,6 +651,9 @@ document.getElementById('view-jacket').innerHTML =
 document.getElementById('view-pants').innerHTML =
   `<div class="section-title">PANTS／パンツの仕様</div><div class="grid">`+
   DATA.categories.filter(c=>c.sec==='pants').map(card).join('')+`</div>`;
+document.getElementById('view-vest').innerHTML =
+  `<div class="section-title">VEST／ベスト（ジレ）の仕様　※スリーピース用</div><div class="grid">`+
+  DATA.categories.filter(c=>c.sec==='vest').map(card).join('')+`</div>`;
 document.getElementById('view-tables').innerHTML =
   DATA.tables.map(cmpTable).join('');
 document.getElementById('view-glossary').innerHTML =
@@ -542,7 +661,7 @@ document.getElementById('view-glossary').innerHTML =
 
 // tabs
 let current='jacket';
-const views=['jacket','pants','tables','glossary'];
+const views=['jacket','pants','vest','tables','glossary'];
 function setView(v){
   current=v;
   views.forEach(x=>document.getElementById('view-'+x).classList.toggle('hidden',x!==v));
